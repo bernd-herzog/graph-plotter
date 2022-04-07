@@ -68,23 +68,58 @@ export class Canvas extends React.Component<{style: CSSProperties },{}>{
         ctx.beginPath();
         ctx.lineWidth = 2;
         ctx.strokeStyle = '#FF0000';
-        ctx.moveTo(0,0);
+        var first:Boolean = true;
+
         for (var i = 0; i < ctx.canvas.clientWidth; i++)
         {
             var x = this.screenToGraph(i, ctx.canvas.clientWidth);
-            var y = x * x;
+            var y = this.calculateFunction(x);
             var j = this.graphToScreen(y, ctx.canvas.clientHeight )
-            ctx.lineTo(i, ctx.canvas.clientHeight-(j));
+            if (first){
+                ctx.moveTo(i, ctx.canvas.clientHeight-(j));
+                first = false;
+            }
+            else{
+                ctx.lineTo(i, ctx.canvas.clientHeight-(j));
+            }
         }
         ctx.stroke();
         ctx.closePath();
     }
 
-    private screenToGraph(i: number, clientWidth: number):number{
-        return -1 + (i / clientWidth) * 2;
+    private screenToGraph(i: number, clientWidth: number): number{
+        var x = -2 + (i / clientWidth) * 4
+
+        if (x >= -1 && x <=1)
+            return x;
+        
+        if (x < -1){
+            return -1/(2 + x)
+        }
+
+        if (x > 1){
+            return 1/(2 - x)
+        }
+
+        return 0;
     }
-    private graphToScreen(y: number, clientHeight: number):number{
-        return (y + 1)/2 * clientHeight
+
+    private calculateFunction(x: number): number{
+        return x*x*x*x*x + x*x*x*x - 2*x*x*x - x*x + 2*x;
+    }
+
+    private graphToScreen(y: number, clientHeight: number): number{
+        
+        if (y >= -1 && y <= 1){
+            return (y + 2)/4 * clientHeight
+        }
+        if (y < -1){
+            return clientHeight - (((1/y)+2 +2) / 4*clientHeight)
+        }
+        if (y > 1){
+            return clientHeight - (((1/y)-2 +2) / 4*clientHeight)
+        }
+        return 0
     }
 
     render() {

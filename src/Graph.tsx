@@ -14,11 +14,7 @@ const graphStyles:CSSProperties = {
 export function Graph() {
     return (
     <>
-        <Canvas style={graphStyles}>
-
-            
-
-        </Canvas>
+        <Canvas style={graphStyles} />
     </>
     );
 }

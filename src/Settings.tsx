@@ -13,8 +13,7 @@ export function Settings() {
     return (<>
         <div style={elementStyles}>
 
-        <TextField label="f(x) = " multiline rows={3} value={"x^2"}/>
-
+        <TextField label="f(x) = " multiline rows={3} value={"x^5 + x^4 - 2x^3 - x^1 + 2x"}/>
         <PrimaryButton text='Draw' onClick={()=>{}} />
 
         </div>
